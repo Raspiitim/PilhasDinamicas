@@ -1,4 +1,4 @@
-package teste;
+package Dinamica;
 
 public class Pilha {
     private No topo;
@@ -37,13 +37,12 @@ public class Pilha {
             No elementoTopo = this.topo;
             this.topo = this.topo.getProximo();
             this.tamanho--;
-            return elementoTopo.getElemento(); // Corrigido para retornar o elemento, não o nó
+            return elementoTopo.getElemento();
         }
-        return null; // Corrigido para retornar null ao invés de false
+        return null;
     }
 
     // Adiciona múltiplos elementos à pilha
-    // Para usar: Object[] elementos = {"A", "B", "C", "D"};
     public void pushMultiplos(Object[] elementos) {
         for (Object elemento : elementos) {
             push(elemento);
@@ -101,6 +100,7 @@ public class Pilha {
         return -1;
     }
     
+    // Mostra o conteúdo da pilha
     public void mostrarPilha() {
         No atual = this.topo;
         if (atual == null) {
@@ -115,6 +115,143 @@ public class Pilha {
         }
     }
 
+    // Encontra a posição do elemento
+    public int encontrarPosicao(Object elemento) {
+        int posicao = 0;
+        No atual = this.topo;
+
+        while (atual != null) {
+            if (atual.getElemento().equals(elemento)) {
+                return posicao;
+            }
+            atual = atual.getProximo();
+            posicao++;
+        }
+
+        return -1; // Retorna -1 se o elemento não for encontrado
+    }
+
+    // Limpa a pilha
+    public void limparPilha() {
+        this.topo = null;
+        this.tamanho = 0;
+        System.out.println("A pilha foi esvaziada.");
+    }
+
+    // Inverte a pilha
+    public void inverterPilha() {
+        if (this.isEmpty()) return;
+
+        No atual = this.topo;
+        No anterior = null;
+        No proximo = null;
+
+        while (atual != null) {
+            proximo = atual.getProximo();
+            atual.setProximo(anterior);
+            anterior = atual;
+            atual = proximo;
+        }
+        this.topo = anterior;
+        System.out.println("A pilha foi invertida.");
+    }
+
+    // Verifica se o elemento existe na pilha
+public boolean contemElemento(Object elemento) {
+    No atual = this.topo;
+    while (atual != null) {
+        if (atual.getElemento().equals(elemento)) {
+            return true;
+        }
+        atual = atual.getProximo();
+    }
+    return false;
+}
+
+// Clona a pilha
+public Pilha clonar() {
+    Pilha pilhaClone = new Pilha();
+    No atual = this.topo;
+    Pilha pilhaAux = new Pilha();
+
+    while (atual != null) {
+        pilhaAux.push(atual.getElemento());
+        atual = atual.getProximo();
+    }
+    
+    while (!pilhaAux.isEmpty()) {
+        pilhaClone.push(pilhaAux.pop());
+    }
+    
+    return pilhaClone;
+}
+
+// Compara duas pilhas
+public boolean compararPilha(Pilha outraPilha) {
+    if (this.size() != outraPilha.size()) return false;
+    
+    No atual1 = this.topo;
+    No atual2 = outraPilha.topo;
+    
+    while (atual1 != null && atual2 != null) {
+        if (!atual1.getElemento().equals(atual2.getElemento())) {
+            return false;
+        }
+        atual1 = atual1.getProximo();
+        atual2 = atual2.getProximo();
+    }
+    
+    return true;
+}
+
+// Troca o topo da pilha
+public void trocarTopo(Object novoElemento) {
+    if (!this.isEmpty()) {
+        this.topo.setElemento(novoElemento);
+    }
+}
+
+// Obter o elemento na base
+public Object obterBase() {
+    No atual = this.topo;
+    while (atual != null && atual.getProximo() != null) {
+        atual = atual.getProximo();
+    }
+    return atual != null ? atual.getElemento() : null;
+}
+
+// Remover o elemento na base
+public void removerBase() {
+    if (this.tamanho == 1) {
+        pop();
+        return;
+    }
+
+    No atual = this.topo;
+    No anterior = null;
+    
+    while (atual.getProximo() != null) {
+        anterior = atual;
+        atual = atual.getProximo();
+    }
+    
+    if (anterior != null) {
+        anterior.setProximo(null);
+        this.tamanho--;
+    }
+}
+
+// Exibe o elemento da base sem removê-lo
+public Object verBase() {
+    No atual = this.topo;
+    while (atual.getProximo() != null) {
+        atual = atual.getProximo();
+    }
+    return atual.getElemento();
+}
+
+
+    // Métodos getters e setters
     public No getTopo() {
         return topo;
     }
